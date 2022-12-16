@@ -28,12 +28,18 @@ static{
     Product honey = new Product(); //mendeklarasikan variabel baru dengan nama honey
     honey.setId("1"); //menentukan id ke-1
     honey.setName("Honey"); //menuliskan nama dari id ke-1 yaitu "Honey"
-    productRepo.put(honey.getId(), honey); //
+    honey.setPrice(15000.0);
+    honey.setDiscount(15);
+    honey.setTotal(honey.getPrice()-(honey.getPrice()*honey.getDiscount())/100);
+    productRepo.put(honey.getId(), honey);
     
     Product almond = new Product(); //mendeklarasikan variabel baru dengan nama almond
     almond.setId("2"); //menentukan id ke-2
     almond.setName("Almond"); //menuliskan nama dari id ke-1 yaitu "Almond"
-    productRepo.put(almond.getId(), almond); //
+    almond.setPrice(10000.0);
+    almond.setDiscount(10);
+    almond.setTotal(almond.getPrice()-(almond.getPrice()*almond.getDiscount())/100);
+    productRepo.put(almond.getId(), almond);
     }
     
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE) //path untuk melakukan delete data ketika id pada kode => "/products/{id}"
@@ -60,6 +66,7 @@ static{
         //jika ada id yang yang dapat di edit maka mucul pesan "Product is update successsfully"
         else 
         {
+            product.setTotal(product.getPrice()-(product.getPrice()*product.getDiscount())/100);
             productRepo.remove(id);
             product.setId(id);
             productRepo.put(id, product);
@@ -77,6 +84,7 @@ static{
         //Jika id yang dimasukkan belum ada dalam list maka muncul pesan "Product added successfully"
         else 
         {
+            product.setTotal(product.getPrice()-(product.getPrice()*product.getDiscount())/100);
             productRepo.put(product.getId(), product);
             return new ResponseEntity<>("Product added successfully", HttpStatus.CREATED);
         }
@@ -87,4 +95,6 @@ static{
     public ResponseEntity<Object> getProduct(){
         return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);//
     }
+    
+    
 }
